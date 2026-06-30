@@ -1,0 +1,36 @@
+{
+  "name": "canvas-hand",
+  "version": "0.1.0",
+  "description": "A local infinite canvas for Codex, powered by tldraw — generate images onto the canvas, annotate with arrows, and let the AI redraw images from your annotations.",
+  "author": {
+    "name": "changcheng"
+  },
+  "keywords": [
+    "canvas",
+    "tldraw",
+    "whiteboard",
+    "image-generation",
+    "annotation"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Canvas Hand",
+    "shortDescription": "Create, annotate, and generate images on a local infinite canvas in Codex.",
+    "longDescription": "Canvas Hand brings a tldraw-powered infinite canvas into Codex. Open a local canvas, generate AI images onto it, draw arrow annotations with instructions, and let the AI read your annotations and redraw the image accordingly — all kept in your project workspace.",
+    "developerName": "changcheng",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive canvas",
+      "Local web service",
+      "AI image generation",
+      "Annotation-driven editing",
+      "Project-local persistence"
+    ],
+    "defaultPrompt": [
+      "Open my canvas",
+      "Generate an image on my canvas",
+      "Redraw this image based on my annotations on the canvas"
+    ]
+  }
+}

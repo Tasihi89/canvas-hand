@@ -1,0 +1,7 @@
+node_modules/
+canvas/
+outputs/
+.DS_Store
+.claude/
+*.log
+mcp/tool-calls.log

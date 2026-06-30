@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "canvas-hand": {
+      "command": "bash",
+      "args": ["./scripts/start-mcp.sh"],
+      "cwd": "."
+    }
+  }
+}

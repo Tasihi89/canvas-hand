@@ -109,7 +109,17 @@ async function onCanvasMount(editor) {
   // ===== 第一步：开局先读，把上次存的画灌回来（必须在开监工之前）=====
   const res = await fetch("/api/load"); // ⭐前后端衔接就在这一行：前端去敲后端的 /api/load 门
   const snapshot = await res.json();    // 把后端交回的 JSON 解析出来
-  loadSnapshot(editor.store, snapshot); // 把这份画灌回画布（还原上次的样子）
+  // 首次没有存档时后端回 {}：跳过加载（tldraw 用它自带的默认空画布），
+  // 并主动存一次“合法空快照”——它带 tldraw 的 schema，这样 MCP 首次加图也有合法结构可读，不会白屏。
+  if (snapshot && snapshot.document) {
+    loadSnapshot(editor.store, snapshot); // 把这份画灌回画布（还原上次的样子）
+  } else {
+    fetch("/api/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(getSnapshot(editor.store)), // 带 schema 的合法空档
+    });
+  }
 
   // ===== 第二步：灌完了，再挂监工（之后你真正的新操作才被存）=====
   editor.store.listen(

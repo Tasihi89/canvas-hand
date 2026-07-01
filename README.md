@@ -14,29 +14,36 @@ Canvas Hand is a local infinite canvas plugin for Codex. Powered by tldraw, it l
 
 ### Let Codex install it automatically
 
-Send this to Codex:
+Send this to Codex — it describes the goal, so Codex uses whatever install method its current version supports:
 
 ```text
 Please install the Canvas Hand Codex plugin from https://github.com/Tasihi89/canvas-hand.git.
-Clone the repo to ~/plugins/canvas-hand, confirm .codex-plugin/plugin.json exists,
-add the plugin to the personal marketplace by running codex plugin marketplace add ~,
-then run codex plugin add canvas-hand@personal.
-After installing, validate the plugin and tell me whether I need to start a new chat
-to load the new skills and MCP tools.
+Steps:
+1. Clone the repo to ~/plugins/canvas-hand and confirm .codex-plugin/plugin.json exists.
+2. Register it in my personal marketplace and enable it, using whatever your current
+   codex version supports. If the `codex plugin ...` CLI subcommands aren't available,
+   do it by editing the config files directly:
+   - add a "canvas-hand" entry to ~/.agents/plugins/marketplace.json (source.path
+     "./plugins/canvas-hand"), and
+   - add [plugins."canvas-hand@personal"] with enabled = true to ~/.codex/config.toml.
+3. Tell me to restart Codex, then confirm Canvas Hand shows up in the Plugins panel.
 ```
 
 ### Manual installation
 
-Clone the plugin to the location the Codex personal marketplace references by default:
+The config-file method below is version-independent and always works. (The `codex plugin ...`
+CLI commands exist in some versions — see the optional note at the end.)
+
+**1. Clone the plugin:**
 
 ```bash
 mkdir -p ~/plugins
 git clone https://github.com/Tasihi89/canvas-hand.git ~/plugins/canvas-hand
 ```
 
-> No need to run `npm install` manually — the first time you open the canvas, `scripts/start-canvas.sh` installs dependencies automatically.
+> No need to run `npm install` — the first time you open the canvas, `scripts/start-canvas.sh` installs dependencies automatically.
 
-Make sure `~/.agents/plugins/marketplace.json` has a Canvas Hand entry:
+**2. Register it in the personal marketplace** — make sure `~/.agents/plugins/marketplace.json` has a `canvas-hand` entry in its `plugins` array (create the file if it doesn't exist):
 
 ```json
 {
@@ -53,14 +60,16 @@ Make sure `~/.agents/plugins/marketplace.json` has a Canvas Hand entry:
 }
 ```
 
-Then register the personal marketplace and install the plugin:
+**3. Enable the plugin** — add this to `~/.codex/config.toml`:
 
-```bash
-codex plugin marketplace add ~
-codex plugin add canvas-hand@personal
+```toml
+[plugins."canvas-hand@personal"]
+enabled = true
 ```
 
-After installing, start a new Codex chat so the new skills and MCP tools load fully.
+**4. Restart Codex.** Canvas Hand should appear in the Plugins panel. Start a new chat so the skills and MCP tools load fully.
+
+> **Optional (CLI):** if your codex version supports the plugin subcommands, you can register the marketplace with `codex plugin marketplace add ~` instead of hand-editing files. Availability varies by version — the config-file method above is the reliable path.
 
 ## Usage
 

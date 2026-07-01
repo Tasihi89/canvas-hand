@@ -39,9 +39,15 @@ async function fetchJson(url, options = {}) {
   return text ? JSON.parse(text) : {};
 }
 
-// 读整份画布（GET /api/load），返回解析好的 data 对象（含 document.store）
+// 读整份画布（GET /api/load）。返回带 document.store 的合法结构。
+// 首次空画布时后端回 {}（没有 tldraw schema）——此时若直接造假空档会缺 schema、存回去导致前端白屏，
+// 所以抛错让调用方提示用户"先打开画布"（开画布时前端会存一份带 schema 的合法空档，之后就正常了）。
 async function loadCanvas() {
-  return fetchJson(`${CANVAS_URL}/api/load`);
+  const data = await fetchJson(`${CANVAS_URL}/api/load`);
+  if (!data || !data.document || !data.document.store) {
+    throw new Error("画布还没初始化——请先在 codex 里说“打开我的画布”，把画布开一次（这会建好画布存档），再重试。");
+  }
+  return data;
 }
 
 // 写回整份画布（POST /api/save），body 就是整份 JSON 文本

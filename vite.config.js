@@ -55,7 +55,14 @@ function canvasStoragePlugin() {
 
         // —— 活儿②：读取。听到 “GET /api/load” 就干（你拍的决策：GET=前端来取东西）——
         if (req.method === "GET" && req.url === "/api/load") {
-          // 注意：这里故意没堵“文件不存在”的坑（你选了 A，撞一次给我们看）
+          // 首次没有 canvas.json（干净环境/空画布）→ 回一个空对象，别崩。
+          // 前端收到空对象会跳过加载、用 tldraw 默认空画布；MCP 收到会兜底成空 store。
+          if (!fs.existsSync(CANVAS_FILE)) {
+            res.statusCode = 200;
+            res.setHeader("content-type", "application/json");
+            res.end("{}");
+            return;
+          }
           const data = fs.readFileSync(CANVAS_FILE, "utf-8"); // 从磁盘把画读出来
           res.statusCode = 200;
           res.end(data); // 把读到的内容原样回给前端
